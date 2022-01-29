@@ -1,0 +1,11 @@
+server bersih-bersih
+test parse step
+build xpath
+
+hapus step
+edit step
+geser step
+jalankan step dari posisi tertentu
+    error kalau driver sudah tutup
+    jalankan dari awal, drive mulai dari awal
+test component
