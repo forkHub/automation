@@ -7,8 +7,8 @@ export class Automation {
     private _halTambah: HalTambah = new HalTambah();
     private _step: Step = new Step();
 
-    static readonly AC_BUKA: string = 'buka';
-    static readonly AC_KLIK: string = 'klik';
+    // static readonly AC_BUKA: string = 'buka';
+    // static readonly AC_KLIK: string = 'klik';
 
     init(): void {
         this.halStep.attach(this.cont);

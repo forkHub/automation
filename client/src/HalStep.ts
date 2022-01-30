@@ -1,8 +1,9 @@
-import { auto, Automation } from "./Automation.js";
+import { auto } from "./Automation.js";
 import { BaseComponent } from "./comp/BaseComponent.js";
 import { dialog } from "./comp/Dialog.js";
 import { Util } from "./comp/Util.js";
 import { IStep } from "./Interface.js";
+import { Kons } from "./Kons.js";
 
 export class HalStep extends BaseComponent {
     private menu: Menu = new Menu()
@@ -124,7 +125,7 @@ class StepItem extends BaseComponent {
     }
 
     getInfo(): string {
-        if (Automation.AC_BUKA == this._step.aksi) {
+        if (Kons.AC_BUKA == this._step.aksi) {
             return "open url: " + this._step.url;
         }
         else {

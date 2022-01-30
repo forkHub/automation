@@ -1,7 +1,10 @@
-import { auto, Automation } from "./Automation.js";
+import { auto } from "./Automation.js";
 import { BaseComponent } from "./comp/BaseComponent.js";
+import { Kons } from "./Kons.js";
 
 export class HalTambah extends BaseComponent {
+    private event: EventHandler = new EventHandler();
+
     constructor() {
         super();
 
@@ -9,10 +12,12 @@ export class HalTambah extends BaseComponent {
             <form class='tambah-step'>
                 
                 <div class='form-control'>
-                    <label>Action:</label>
+                    <label>Action:</label> 
                     <select name='aksi'>
-                        <option value='${Automation.AC_BUKA}'>open url</option>
-                        <option value='${Automation.AC_KLIK}'>click</option>
+                        <option value='${Kons.AC_BUKA}'>open url</option>
+                        <option value='${Kons.AC_KLIK}'>click</option>
+                        <option value='${Kons.AC_BUKA_BROWSER}'>open browser</option>
+                        <option value='${Kons.AC_TUTUP}'>close</option>
                     </select>
                 </div>
 
@@ -29,6 +34,12 @@ export class HalTambah extends BaseComponent {
                     </select>
                 </div>
 
+                <div class='form-control xpath display-none'>
+                    <label>xpath:</label>
+                    <input type='text' name='xpath' value=''/>
+                    <button class='browse' type='button'>browse ...</button>
+                </div>
+
                 <div class='form-control submit'>
                     <button class='kirim' type='submit'>OK</button>
                 </div>
@@ -38,65 +49,19 @@ export class HalTambah extends BaseComponent {
 
         this.build();
 
-        this.aksiSelect.onclick = (e: MouseEvent) => {
-            e.stopPropagation();
-            console.log('aksi klik: ' + this.aksiSelect.selectedIndex);
-            let index: number = this.aksiSelect.selectedIndex;
+        this.event.init();
+    }
 
-            if (index == 0) {   //select url
-                this.urlFormControl.style.display = 'block';
-                this.elmTypeFormControl.style.display = 'none';
-            }
-            else if (1 == index) {
-                this.urlFormControl.style.display = 'none';
-                this.elmTypeFormControl.style.display = 'block';
-            }
-            else {
-                throw Error('');
-            }
+    get browseTbl(): HTMLButtonElement {
+        return this.getEl('form button.browse') as HTMLButtonElement;
+    }
 
-            auto.step.stepAktif.aksi = this.aksiSelect.value;
+    get xpathInput(): HTMLInputElement {
+        return this.getEl('form input[name=xpath]') as HTMLInputElement;
+    }
 
-            console.log('step aktif:')
-            console.log(auto.step.stepAktif);
-        }
-
-        this.elmTypeSelect.onclick = (e: MouseEvent) => {
-            e.stopPropagation();
-            console.log('elm type select klik');
-            // let index: number = this.elmTypeSelect.selectedIndex;
-
-            // if (0 == index) {   //button
-            // }
-            // else if (1 == index) {  //link
-            // }
-            // else {
-            //     throw Error('');
-            // }
-
-            auto.step.stepAktif.elmType = this.elmTypeSelect.value;
-            console.log('step aktif:')
-            console.log(auto.step.stepAktif);
-        }
-
-        this.urlInput.onchange = (e: Event) => {
-            e.stopPropagation();
-            auto.step.stepAktif.url = this.urlInput.value;
-        }
-
-        this.form.onsubmit = (): boolean => {
-            try {
-                auto.step.tambahStep(auto.step.stepAktif);
-                auto.step.stepAktif = null;
-                this.detach();
-                this.finish();
-            }
-            catch (e) {
-                console.error(e);
-            }
-            return false;
-        }
-
+    get xpathFormControl(): HTMLDivElement {
+        return this.getEl('form div.form-control.xpath') as HTMLDivElement;
     }
 
     get form(): HTMLFormElement {
@@ -126,5 +91,86 @@ export class HalTambah extends BaseComponent {
     get tblKirim(): HTMLButtonElement {
         return this.getEl('button[type=submit]') as HTMLButtonElement;
     }
+
+}
+
+class EventHandler {
+    private _view: HalTambah;
+    public get view(): HalTambah {
+        return this._view;
+    }
+    public set view(value: HalTambah) {
+        this._view = value;
+    }
+
+    constructor() {
+
+    }
+
+    init(): void {
+
+        this.view.browseTbl.onclick = (e: MouseEvent) => {
+            e.stopPropagation();
+            e.preventDefault();
+        }
+
+        this.view.aksiSelect.onclick = (e: MouseEvent) => {
+            e.stopPropagation();
+            console.log('aksi klik: ' + this.view.aksiSelect.selectedIndex);
+            let index: number = this.view.aksiSelect.selectedIndex;
+
+            if (index == 0) {   //select url
+                this.view.urlFormControl.style.display = 'block';
+                this.view.elmTypeFormControl.style.display = 'none';
+                this.view.xpathFormControl.style.display = 'none';
+            }
+            else if (1 == index) {  //click
+                this.view.urlFormControl.style.display = 'none';
+                this.view.elmTypeFormControl.style.display = 'none';
+                this.view.xpathFormControl.style.display = 'block';
+            }
+            else if (2 == index) {  //buka browser
+                this.view.urlFormControl.style.display = 'none';
+                this.view.elmTypeFormControl.style.display = 'none';
+                this.view.xpathFormControl.style.display = 'none';
+            }
+            else {
+                throw Error('');
+            }
+
+            auto.step.stepAktif.aksi = this.view.aksiSelect.value;
+
+            console.log('step aktif:')
+            console.log(auto.step.stepAktif);
+        }
+
+        this.view.elmTypeSelect.onclick = (e: MouseEvent) => {
+            e.stopPropagation();
+            console.log('elm type select klik');
+
+            auto.step.stepAktif.elmType = this.view.elmTypeSelect.value;
+            console.log('step aktif:')
+            console.log(auto.step.stepAktif);
+        }
+
+        this.view.urlInput.onchange = (e: Event) => {
+            e.stopPropagation();
+            auto.step.stepAktif.url = this.view.urlInput.value;
+        }
+
+        this.view.form.onsubmit = (): boolean => {
+            try {
+                auto.step.tambahStep(auto.step.stepAktif);
+                auto.step.stepAktif = null;
+                this.view.detach();
+                this.view.finish();
+            }
+            catch (e) {
+                console.error(e);
+            }
+            return false;
+        }
+    }
+
 
 }

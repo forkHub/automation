@@ -1,5 +1,5 @@
-import { Automation } from "./Automation.js";
 import { IStep } from "./Interface.js";
+import { Kons } from "./Kons.js";
 
 export class Step {
     private _steps: IStep[] = [];
@@ -7,7 +7,7 @@ export class Step {
 
     buatDefaultStep(): IStep {
         return {
-            aksi: Automation.AC_BUKA,
+            aksi: Kons.AC_BUKA,
             elmType: '',
             url: 'http://www.google.com',
             desc: ''
