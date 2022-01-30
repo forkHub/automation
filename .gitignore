@@ -1,3 +1,5 @@
 node_modules
 /deploy/chromedriver_win32.zip
 /deploy/chromedriver.exe
+module
+public
