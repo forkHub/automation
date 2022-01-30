@@ -24,7 +24,7 @@ class WebdriverWrapper {
 			.build();
 
 		console.debug('# create browser chrome');
-		console.debug("# this driver " + this.driver);
+		console.debug("# this driver " + this._driver);
 
 		this.driverList.push(this._driver);
 	}
@@ -123,12 +123,11 @@ class WebdriverWrapper {
 		throw Error('Element ditemukan: ' + l.toString());
 	}
 
-
 	async sendKeys(locator: webdriver.Locator, str: string): Promise<void> {
 		await this.jeda(1000);
 		await this.waitElement(locator, 1000);
 		console.debug("# send keys, loc " + locator + "/str " + str);
-		await (await (await this.driver).findElement(locator)).clear();
+		await (await (this.driver).findElement(locator)).clear();
 		await this.driver.findElement(locator).sendKeys(str);
 	}
 
@@ -150,7 +149,7 @@ class WebdriverWrapper {
 
 	async waitElement(locator: webdriver.Locator, timeOut: number): Promise<any> {
 		console.log("# tunggu element, locator " + locator);
-		await (await this.driver).wait(this.until.elementsLocated(locator), timeOut);
+		await (this.driver).wait(this.until.elementsLocated(locator), timeOut);
 	}
 
 	async click(locator: webdriver.Locator): Promise<void> {
@@ -161,7 +160,7 @@ class WebdriverWrapper {
 
 	async quit(): Promise<void> {
 		console.log("quit " + this.driver);
-		await (await this.driver).quit();
+		await (this.driver).quit();
 	}
 
 	public get lastEl(): webdriver.WebElement {

@@ -1,6 +1,6 @@
 import express from "express";
 import fs from "fs";
-import { RouterKOns } from "./silsilah/RouterKons";
+// import { RouterKOns } from "./silsilah/RouterKons";
 
 export class Util {
 	private caches: ICache[] = [];
@@ -16,76 +16,6 @@ export class Util {
 		});
 
 		return urlHasil;
-	}
-
-	//TODO: [rev] param
-	hal2(offsetLog: number, jumlahAbs: number, kunci: string, path: string, jmlPerHal: number, anggota: ISlAnggota): string {
-		return `
-			<nav aria-label="Page navigation example" style="text-align:center">
-				${this.hal3(offsetLog, jumlahAbs, kunci, path, jmlPerHal, anggota)}
-			</nav>
-		`;
-	}
-
-	private hal3(offsetLog: number, jumlahAbs: number, kunci: string, path: string, jmlPerHal: number, anggota: ISlAnggota): string {
-		let hasil: string = '';
-
-		if (jumlahAbs <= jmlPerHal) {
-			return '';
-		}
-
-		let jumlahLog: number = Math.ceil(jumlahAbs / jmlPerHal);
-
-		let halSeb: number;
-		let halSet: number;
-
-		if (jumlahAbs <= 0) {
-			return hasil;
-		}
-
-		halSeb = offsetLog - 1;
-		if (halSeb < 0) halSeb = 0;
-
-		halSet = offsetLog + 1;
-		if (halSet > jumlahLog - 1) halSet = jumlahLog - 1;
-
-		hasil = `
-			<ul class="pagination">
-				<li class="page-item">
-					<a class="page-link" href="${this.getUrlCari(kunci, halSeb, path, anggota)}" aria-label="Previous">
-						<span aria-hidden="true">&laquo;</span>
-					</a>
-				</li>
-				<li class="page-item"><a class="page-link" href="#">${offsetLog + 1}/${jumlahLog}</a></li>
-				<li class="page-item">
-					<a class="page-link" href="${this.getUrlCari(kunci, halSet, path, anggota)}" aria-label="Next">
-						<span aria-hidden="true">&raquo;</span>
-					</a>
-				</li>
-			</ul>		
-		`;
-
-		return hasil;
-	}
-
-	getUrlCari(kunci: string, hal: number, path: string, anggota: ISlAnggota): string {
-		let hasil: string;
-
-		//beranda
-		if (path == RouterKOns.g_anggota_daftar_kunci_hal) {
-			hasil = this.getUrl(path, [kunci, hal])
-		}
-		else if (path == RouterKOns.g_anggota_id_calon_pas_cari_kunci_hal) {
-			hasil = this.getUrl(path, [anggota.id, kunci, hal])
-		}
-		else if (path == RouterKOns.g_anggota_id_anak_tambah_kunci_hal) {
-			hasil = this.getUrl(path, [anggota.id, kunci, hal]);
-		}
-		else {
-			throw Error('path belum didefinisikan');
-		}
-
-		return hasil;
 	}
 
 	stringNull(t: string): string {

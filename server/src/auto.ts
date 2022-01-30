@@ -3,9 +3,9 @@ import cookieSession from "cookie-session";
 import { Server } from "http";
 import { kons } from "./module/Kons";
 import { util } from "./module/Util";
-import { api } from "./module/api/Router";
-import { sm } from "./module/silsilah/SilsilahModule";
-import { Connection } from "./module/Connection";
+// import { api } from "./module/api/Router";
+// import { sm } from "./module/silsilah/SilsilahModule";
+// import { Connection } from "./module/Connection";
 import { routerAuto } from "./module/auto/Router";
 
 const app: express.Express = express();
@@ -25,12 +25,12 @@ try {
 	}));
 
 	// app.use("/", toko.router.router)
-	app.use("/", api.router);
-	app.use("/", sm.router.router);
+	// app.use("/", api.router);
+	// app.use("/", sm.router.router);
 	app.use("/", routerAuto.router);
 
-	api.mapRouter();
-	sm.router.mapRouter();
+	// api.mapRouter();
+	// sm.router.mapRouter();
 	routerAuto.mapRouter();
 	// toko.router.mapRouter();
 
@@ -41,14 +41,14 @@ try {
 	process.on('SIGTERM', () => {
 		try {
 
-			Connection.pool.end((err) => {
-				if (err) {
-					console.error;
-				}
-				else {
+			// Connection.pool.end((err) => {
+			// 	if (err) {
+			// 		console.error;
+			// 	}
+			// 	else {
 
-				}
-			});
+			// 	}
+			// });
 
 		} catch (e) {
 			console.error;
@@ -56,7 +56,7 @@ try {
 
 	});
 
-	Connection.connect();
+	// Connection.connect();
 }
 catch (e) {
 	console.log("========================================");
