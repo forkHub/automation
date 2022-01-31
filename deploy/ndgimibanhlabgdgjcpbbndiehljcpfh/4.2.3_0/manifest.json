@@ -1,0 +1,37 @@
+{
+   "author": "Sanjay Kumar",
+   "background": {
+      "page": "extension/background.html",
+      "persistent": false
+   },
+   "browser_action": {
+      "default_popup": "extension/popup.html",
+      "default_title": "__MSG_extDefaultTitle__"
+   },
+   "content_scripts": [ {
+      "all_frames": true,
+      "css": [ "content-script/contentScript.css" ],
+      "js": [ "content-script/contentScript.js" ],
+      "match_about_blank": true,
+      "matches": [ "\u003Call_urls>" ],
+      "run_at": "document_start"
+   } ],
+   "content_security_policy": "script-src 'self' https://www.gstatic.com/ https://*.firebaseio.com https://www.googleapis.com; object-src 'self'",
+   "default_locale": "en",
+   "description": "__MSG_extDescription__",
+   "devtools_page": "devtools-panel/devtools.html",
+   "differential_fingerprint": "1.f82260c8254e662f57005dd8c15059494b810afdbe4ed037341985b8d9e23311",
+   "homepage_url": "https://www.selectorshub.com/",
+   "icons": {
+      "128": "logo-128.png",
+      "48": "logo-48.png",
+      "96": "logo-96.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApjGa2/5aakd9AkHpa4FJTX1GaHT7ZbGRlsxb6R9iEIAXXi1iomcHOi3Xqsv14m94rzzUGsOHEJBqQWfiNHCNgc29pRlLzEbi61MvcHCULqLvJgBwyy9MEYLeUIf0bw2TQxI34swHBEed1Y+Rr3RA/YLDv/r85aibOpBtDaWqy5xnXVVLXJraK2AuOnZpS3ti5ue/w53+IM58qH3NTuDMv3s84u7FAU/n/c8wQxx68QQB1nUOGxtwa2q2stOk6eWW7N+VhhSQTjwBJVKuYQ03Y17hb7RttVgDj17kpv76GzoJXinwkhqO4/oZ4zh2zXxUWXMFI4TbbEmOtzGkAOqbIQIDAQAB",
+   "manifest_version": 2,
+   "name": "SelectorsHub - XPath Plugin",
+   "offline_enabled": true,
+   "permissions": [ "tabs", "notifications", "storage", "contextMenus", "clipboardWrite", "cookies", "https://selectorshub.com/" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "4.2.3"
+}
