@@ -1,4 +1,8 @@
 import webdriver, { Capabilities, Locator, WebElementPromise } from 'selenium-webdriver';
+import { Options } from 'selenium-webdriver/chrome';
+import { util } from '../Util';
+// import { AutoKons } from './AutoKons';
+// import { Options } from 'selenium-webdriver/chrome';
 
 class WebdriverWrapper {
 	private until = webdriver.until;
@@ -18,9 +22,17 @@ class WebdriverWrapper {
 	}
 
 	async createBrowserChrome(): Promise<void> {
+		let option: Options = new Options();
+
+		console.log("dirname: " + __dirname);
+		console.log("base dir: " + util.baseDir);
+
+		option.addArguments("load-extension=" + util.baseDir + "\\ndgimibanhlabgdgjcpbbndiehljcpfh\\4.2.3_0");
+
 		this._driver = await (new webdriver.Builder()
 			.forBrowser('chrome')
 			.withCapabilities(Capabilities.chrome().set("acceptInsecureCerts", true).setAlertBehavior('dismiss')))
+			.setChromeOptions(option)
 			.build();
 
 		console.debug('# create browser chrome');

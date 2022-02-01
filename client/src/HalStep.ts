@@ -24,12 +24,19 @@ export class HalStep extends BaseComponent {
         this.menu.attach(this.tblCont);
     }
 
+    init(): void {
+        this.menu.init();
+    }
+
     render(): void {
         this.listCont.innerHTML = '';
         auto.step.steps.forEach((item: IStep) => {
-            console.log(item);
+            // console.log(item);
             let view: StepItem = new StepItem(item);
             view.attach(this.listCont);
+            if (auto.step.stepAktif == item) {
+                view.dipilih();
+            }
         });
     }
 
@@ -40,11 +47,11 @@ export class HalStep extends BaseComponent {
     get tblCont(): HTMLButtonElement {
         return this.getEl('div.btn-cont') as HTMLButtonElement;
     }
-
-
 }
 
 class Menu extends BaseComponent {
+    private handler: MenuHandler = new MenuHandler();
+
     constructor() {
         super();
         this._template = `
@@ -59,27 +66,11 @@ class Menu extends BaseComponent {
             </div>
         `;
         this.build();
+    }
 
-        this.tambahTbl.onclick = () => {
-            console.log('tombol tambah klik');
-            let step: IStep = auto.step.buatDefaultStep();
-            auto.step.stepAktif = step;
-            auto.halTambah.attach(document.body);
-            auto.halTambah.finish = () => {
-                auto.halStep.render();
-                auto.step.simpan();
-            }
-        }
-
-        this.jalanTbl.onclick = () => {
-            console.log('jalan tombol klik');
-            Util.Ajax2('post', '/api/auto/run', auto.step.toString()).then((s: string) => {
-                console.log('complete: ' + s);
-            }).catch((e) => {
-                console.error(e);
-                dialog.tampil(e.message);
-            });
-        }
+    init(): void {
+        this.handler.view = this;
+        this.handler.init();
     }
 
     get jalanTbl(): HTMLButtonElement {
@@ -90,6 +81,66 @@ class Menu extends BaseComponent {
         return this.getEl('button.tambah') as HTMLButtonElement;
     }
 
+    get hapusTbl(): HTMLButtonElement {
+        return this.getEl('button.delete') as HTMLButtonElement;
+    }
+
+    get geserAtasTbl(): HTMLButtonElement {
+        return this.getEl('button.geser-atas') as HTMLButtonElement;
+    }
+
+    get geserBawahTbl(): HTMLButtonElement {
+        return this.getEl("button.geser-bawah") as HTMLButtonElement;
+    }
+
+}
+
+class MenuHandler {
+    private _view: Menu;
+    public set view(value: Menu) {
+        this._view = value;
+    }
+
+    init(): void {
+        this._view.tambahTbl.onclick = () => {
+            console.log('tombol tambah klik');
+            let step: IStep = auto.step.buatDefaultStep();
+            auto.step.stepAktif = step;
+            auto.halTambah.attach(document.body);
+            auto.halTambah.finish = () => {
+                auto.halStep.render();
+                auto.step.simpan();
+            }
+        }
+
+        this._view.jalanTbl.onclick = () => {
+            console.log('jalan tombol klik');
+            let steps: any = {
+                step: auto.step.toString()
+            }
+
+            Util.Ajax2('post', '/api/auto/run', JSON.stringify(steps)).then((s: string) => {
+                console.log('complete: ' + s);
+            }).catch((e) => {
+                console.error(e);
+                dialog.tampil(e.message);
+            });
+        }
+
+        this._view.hapusTbl.onclick = () => {
+            console.log('hapus click');
+            auto.step.hapus();
+            auto.halStep.render();
+            auto.step.simpan();
+        }
+
+        this._view.geserAtasTbl.onclick = () => {
+            console.log('geser atas');
+            auto.step.geserAtas(auto.step.stepAktif);
+            auto.halStep.render();
+            auto.step.simpan();
+        }
+    }
 }
 
 class StepItem extends BaseComponent {
@@ -112,16 +163,19 @@ class StepItem extends BaseComponent {
 
         this._elHtml.onclick = () => {
             console.log('dipilih');
-
-            document.body.querySelectorAll('div.row.step-item.comp.dipilih').forEach((item: Element) => {
-                item.classList.remove('dipilih');
-            });
-
-            auto.step.stepAktif = this._step;
-            this._elHtml.classList.add('dipilih');
+            this.dipilih();
         }
 
-        console.log(step);
+        // console.log(step);
+    }
+
+    dipilih(): void {
+        document.body.querySelectorAll('div.row.step-item.comp.dipilih').forEach((item: Element) => {
+            item.classList.remove('dipilih');
+        });
+
+        auto.step.stepAktif = this._step;
+        this._elHtml.classList.add('dipilih');
     }
 
     getInfo(): string {

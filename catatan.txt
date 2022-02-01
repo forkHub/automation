@@ -1,11 +1,18 @@
-server bersih-bersih
-test parse step
-build xpath
-
-hapus step
 edit step
-geser step
+geser step bawah
+share (copy paste)
+
+test crud (buat test, load test, update, delete)
+browse component
+cari plugin lain
 jalankan step dari posisi tertentu
     error kalau driver sudah tutup
     jalankan dari awal, drive mulai dari awal
-test component
+tombol test component
+share email
+share whatsapp
+stop on error option, ignore unexisted document
+delay between action
+
+
+jika ada yang kurang => product limitation

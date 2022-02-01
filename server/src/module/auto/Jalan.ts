@@ -1,24 +1,27 @@
 // import { Kons } from "../Kons";
+import { By } from "selenium-webdriver";
 import { AutoKons } from "./AutoKons";
+import { d } from "./Driver";
 import { IStep } from "./Interface";
 
 export class Jalan {
 
     async jalan(data: IStep[]): Promise<void> {
+        console.log('jalan');
         for (let i: number = 0; i < data.length; i++) {
             let step: IStep = data[i];
-            step; //TODO
+            console.log(step);
             if (step.aksi == AutoKons.AC_BUKA) {
-
+                await d.navigate(step.url);
             }
             else if (step.aksi == AutoKons.AC_KLIK) {
-
+                await d.click(By.xpath(step.xpath));
             }
             else if (step.aksi == AutoKons.AC_BUKA_BROWSER) {
-
+                await d.createBrowserChrome();
             }
             else {
-
+                throw ('invalid action: ' + step.aksi);
             }
         }
     }

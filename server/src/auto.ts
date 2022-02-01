@@ -3,13 +3,19 @@ import cookieSession from "cookie-session";
 import { Server } from "http";
 import { kons } from "./module/Kons";
 import { util } from "./module/Util";
-// import { api } from "./module/api/Router";
-// import { sm } from "./module/silsilah/SilsilahModule";
-// import { Connection } from "./module/Connection";
 import { routerAuto } from "./module/auto/Router";
+import { Jalan } from "./module/auto/Jalan";
 
 const app: express.Express = express();
 const port: number = 3000;
+
+export class Auto {
+	private _jalan: Jalan = new Jalan();
+	public get jalan(): Jalan {
+		return this._jalan;
+	}
+}
+export const auto = new Auto();
 
 try {
 	util.buatRandom();

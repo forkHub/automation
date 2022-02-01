@@ -1,10 +1,13 @@
 import express from "express";
 import { util } from "../Util";
+import { IStep } from "./Interface";
+import { Jalan } from "./Jalan";
 import { step } from "./Step";
 // import { step } from "./Step";
 
 class Router {
 	readonly router = express.Router();
+	readonly jalan: Jalan = new Jalan();
 
 	mapRouter(): void {
 		console.debug('api router 2');
@@ -29,7 +32,12 @@ class Router {
 		this.router.post("/api/auto/run", (req: express.Request, resp: express.Response) => {
 			try {
 				console.log(req.body);
-				resp.status(200).send('');
+				let bodyObj: IStep[] = JSON.parse(req.body.step);
+				this.jalan.jalan(bodyObj).then(() => {
+					resp.status(200).send('');
+				}).catch((e) => {
+					util.respError(resp, e);
+				})
 			}
 			catch (e) {
 				util.respError(resp, e);

@@ -48,12 +48,15 @@ export class HalTambah extends BaseComponent {
         `;
 
         this.build();
+    }
 
+    init(): void {
+        this.event.view = this;
         this.event.init();
     }
 
     get browseTbl(): HTMLButtonElement {
-        return this.getEl('form button.browse') as HTMLButtonElement;
+        return this.getEl('form div.form-control button.browse') as HTMLButtonElement;
     }
 
     get xpathInput(): HTMLInputElement {
@@ -108,6 +111,9 @@ class EventHandler {
     }
 
     init(): void {
+
+        // console.log(this.view);
+        // console.log(this.view.browseTbl);
 
         this.view.browseTbl.onclick = (e: MouseEvent) => {
             e.stopPropagation();
