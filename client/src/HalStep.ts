@@ -81,6 +81,10 @@ class Menu extends BaseComponent {
         return this.getEl('button.tambah') as HTMLButtonElement;
     }
 
+    get editTbl(): HTMLButtonElement {
+        return this.getEl('button.edit') as HTMLButtonElement;
+    }
+
     get hapusTbl(): HTMLButtonElement {
         return this.getEl('button.delete') as HTMLButtonElement;
     }
@@ -106,6 +110,7 @@ class MenuHandler {
             console.log('tombol tambah klik');
             let step: IStep = auto.step.buatDefaultStep();
             auto.step.stepAktif = step;
+            auto.halTambah.mode = Kons.MD_TAMBAH;
             auto.halTambah.attach(document.body);
             auto.halTambah.finish = () => {
                 auto.halStep.render();
@@ -139,6 +144,20 @@ class MenuHandler {
             auto.step.geserAtas(auto.step.stepAktif);
             auto.halStep.render();
             auto.step.simpan();
+        }
+
+        this._view.geserBawahTbl.onclick = () => {
+            //TODO:
+        }
+
+        this._view.editTbl.onclick = () => {
+            console.debug('edit click');
+            auto.halTambah.mode = Kons.MD_EDIT;
+            auto.halTambah.attach(document.body);
+            auto.halTambah.finish = () => {
+                auto.halStep.render();
+                auto.step.simpan();
+            }
         }
     }
 }

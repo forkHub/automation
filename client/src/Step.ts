@@ -1,4 +1,3 @@
-// import { auto } from "./Automation.js";
 import { IStep } from "./Interface.js";
 import { Kons } from "./Kons.js";
 

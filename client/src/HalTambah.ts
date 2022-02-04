@@ -4,6 +4,7 @@ import { Kons } from "./Kons.js";
 
 export class HalTambah extends BaseComponent {
     private event: EventHandler = new EventHandler();
+    private _mode: number;
 
     constructor() {
         super();
@@ -95,6 +96,14 @@ export class HalTambah extends BaseComponent {
         return this.getEl('button[type=submit]') as HTMLButtonElement;
     }
 
+    public get mode(): number {
+        return this._mode;
+    }
+    public set mode(value: number) {
+        this._mode = value;
+    }
+
+
 }
 
 class EventHandler {
@@ -111,9 +120,6 @@ class EventHandler {
     }
 
     init(): void {
-
-        // console.log(this.view);
-        // console.log(this.view.browseTbl);
 
         this.view.browseTbl.onclick = (e: MouseEvent) => {
             e.stopPropagation();
@@ -165,15 +171,28 @@ class EventHandler {
         }
 
         this.view.form.onsubmit = (): boolean => {
+
             try {
-                auto.step.tambahStep(auto.step.stepAktif);
-                auto.step.stepAktif = null;
-                this.view.detach();
-                this.view.finish();
+                if (this.view.mode == Kons.MD_TAMBAH) {
+                    this.view.mode = 0;
+                    auto.step.tambahStep(auto.step.stepAktif);
+                    auto.step.stepAktif = null;
+                    this.view.detach();
+                    this.view.finish();
+                }
+                else if (this.view.mode == Kons.MD_EDIT) {
+                    this.view.mode = 0;
+                    this.view.detach();
+                    this.view.finish();
+                }
+                else {
+                    throw Error();
+                }
             }
             catch (e) {
                 console.error(e);
             }
+
             return false;
         }
     }
