@@ -1,8 +1,4 @@
-import { auto } from "./Automation.js";
-import { BaseComponent } from "./comp/BaseComponent.js";
-import { Kons } from "./Kons.js";
-
-export class HalTambah extends BaseComponent {
+class HalTambah extends ha.comp.BaseComponent {
     private event: EventHandler = new EventHandler();
     private _mode: number;
 
@@ -171,9 +167,11 @@ class EventHandler {
         }
 
         this.view.form.onsubmit = (): boolean => {
+            console.group("form submit:");
 
             try {
                 if (this.view.mode == Kons.MD_TAMBAH) {
+                    console.log("mode tambah");
                     this.view.mode = 0;
                     auto.step.tambahStep(auto.step.stepAktif);
                     auto.step.stepAktif = null;
@@ -181,6 +179,7 @@ class EventHandler {
                     this.view.finish();
                 }
                 else if (this.view.mode == Kons.MD_EDIT) {
+                    console.log("mode edit");
                     this.view.mode = 0;
                     this.view.detach();
                     this.view.finish();
@@ -193,7 +192,10 @@ class EventHandler {
                 console.error(e);
             }
 
+            console.groupEnd();
+
             return false;
+
         }
     }
 

@@ -1,4 +1,4 @@
-export interface IStep {
+interface IStep {
     aksi: string,
     url: string,
     elmType: string,

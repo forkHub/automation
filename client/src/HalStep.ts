@@ -1,11 +1,4 @@
-import { auto } from "./Automation.js";
-import { BaseComponent } from "./comp/BaseComponent.js";
-import { dialog } from "./comp/Dialog.js";
-import { Util } from "./comp/Util.js";
-import { IStep } from "./Interface.js";
-import { Kons } from "./Kons.js";
-
-export class HalStep extends BaseComponent {
+class HalStep extends ha.comp.BaseComponent {
     private menu: Menu = new Menu()
 
     constructor() {
@@ -49,7 +42,7 @@ export class HalStep extends BaseComponent {
     }
 }
 
-class Menu extends BaseComponent {
+class Menu extends ha.comp.BaseComponent {
     private handler: MenuHandler = new MenuHandler();
 
     constructor() {
@@ -124,11 +117,11 @@ class MenuHandler {
                 step: auto.step.toString()
             }
 
-            Util.Ajax2('post', '/api/auto/run', JSON.stringify(steps)).then((s: string) => {
+            ha.comp.util.Ajax2('post', '/api/auto/run', JSON.stringify(steps)).then((s: string) => {
                 console.log('complete: ' + s);
             }).catch((e) => {
                 console.error(e);
-                dialog.tampil(e.message);
+                ha.comp.dialog.tampil(e.message);
             });
         }
 
@@ -162,7 +155,7 @@ class MenuHandler {
     }
 }
 
-class StepItem extends BaseComponent {
+class StepItem extends ha.comp.BaseComponent {
     private _step: IStep;
 
     constructor(step: IStep) {

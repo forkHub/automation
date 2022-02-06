@@ -1,7 +1,4 @@
-import { IStep } from "./Interface.js";
-import { Kons } from "./Kons.js";
-
-export class Step {
+class Step {
     private _steps: IStep[] = [];
     private _stepAktif: IStep;
 

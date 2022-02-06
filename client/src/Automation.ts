@@ -1,8 +1,4 @@
-import { HalStep } from "./HalStep.js";
-import { HalTambah } from "./HalTambah.js";
-import { Step } from "./Step.js";
-
-export class Automation {
+class Automation {
     private _halStep: HalStep = new HalStep();
     private _halTambah: HalTambah = new HalTambah();
     private _step: Step = new Step();
@@ -39,7 +35,7 @@ export class Automation {
 
 }
 
-export var auto: Automation;
+var auto: Automation;
 
 window.onload = () => {
     auto = new Automation();
